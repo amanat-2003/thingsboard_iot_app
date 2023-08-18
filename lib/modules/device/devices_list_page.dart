@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/generated/l10n.dart';
 import 'package:iot_app/modules/device/devices_base.dart';
 import 'package:iot_app/modules/device/devices_list.dart';
-import 'package:iot_app/widgets/app_bar_painter.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 class DevicesListPage extends TbPageWidget {
@@ -90,20 +88,7 @@ class _DevicesListPageState extends TbPageState<DevicesListPage> {
         )
       ]);
     }
-    Widget body = devicesList;
-    return Scaffold(
-      appBar: appBar,
-      backgroundColor: AppColors.backgroundColor,
-      body: Stack(
-        children: [
-          body,
-          CustomPaint(
-            painter: AppBarPainter(),
-            child: Container(height: 0),
-          ),
-        ],
-      ),
-    );
+    return Scaffold(appBar: appBar, body: devicesList);
   }
 
   @override
