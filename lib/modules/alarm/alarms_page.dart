@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/modules/alarm/alarms_base.dart';
-import 'package:iot_app/widgets/app_bar_painter.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 import 'alarms_list.dart';
@@ -47,19 +46,7 @@ class _AlarmsPageState extends TbContextState<AlarmsPage>
         )
       ]);
     }
-    return Scaffold(
-      appBar: appBar,
-      backgroundColor: Color(0xfff1f2fa),
-      body: Stack(
-        children: [
-          alarmsList,
-          CustomPaint(
-            painter: AppBarPainter(),
-            child: Container(height: 0),
-          ),
-        ],
-      ),
-    );
+    return Scaffold(appBar: appBar, body: alarmsList);
   }
 
   @override

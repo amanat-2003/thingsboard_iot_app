@@ -1,6 +1,4 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:iot_app/constants/app_colors.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'package:flutter/material.dart';
@@ -128,19 +126,6 @@ class ThingsboardAppState extends State<ThingsboardApp>
     return res;
   }
 
-  final theme = ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        brightness: Brightness.dark,
-        seedColor: AppColors.appBarColor,
-      ),
-      textTheme: GoogleFonts.latoTextTheme(),
-      appBarTheme: AppBarTheme().copyWith(
-        foregroundColor: AppColors.backgroundColor,
-        backgroundColor: AppColors.appBarColor,
-        // color: AppColors.backgroundColor,
-      ));
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -154,10 +139,9 @@ class ThingsboardAppState extends State<ThingsboardApp>
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        theme: theme,
         supportedLocales: S.delegate.supportedLocales,
         onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
-        themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         home: TwoPageView(
             controller: _mainPageViewController,
             first: MaterialApp(

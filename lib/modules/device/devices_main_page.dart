@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/modules/device/device_profiles_grid.dart';
-import 'package:iot_app/widgets/app_bar_painter.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 class DevicesMainPage extends TbContextWidget {
@@ -28,18 +26,8 @@ class _DevicesMainPageState extends TbContextState<DevicesMainPage>
     super.build(context);
     var deviceProfilesList = DeviceProfilesGrid(tbContext, _pageLinkController);
     return Scaffold(
-      appBar: TbAppBar(tbContext, title: Text(deviceProfilesList.title)),
-      backgroundColor: AppColors.backgroundColor,
-      body: Stack(
-        children: [
-          deviceProfilesList,
-          CustomPaint(
-            painter: AppBarPainter(),
-            child: Container(height: 0),
-          ),
-        ],
-      ),
-    );
+        appBar: TbAppBar(tbContext, title: Text(deviceProfilesList.title)),
+        body: deviceProfilesList);
   }
 
   @override

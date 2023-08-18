@@ -26,9 +26,8 @@ class EntityGridCard<T> extends StatelessWidget {
         child: Container(
           child: Card(
               margin: EdgeInsets.zero,
-              clipBehavior: Clip.hardEdge,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(4),
               ),
               elevation: 0,
               child: _entityCardWidgetBuilder(context, _entity)),
