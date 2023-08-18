@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:iot_app/constants/assets_path.dart';
 import 'package:iot_app/core/context/tb_context.dart';
@@ -68,14 +69,15 @@ class _LoginPageState extends TbPageState<LoginPage> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Row(children: [
-                            SvgPicture.asset(
-                                ThingsboardImage.thingsBoardWithTitle,
-                                height: 25,
-                                color: Theme.of(context).primaryColor,
-                                semanticsLabel:
-                                    '${S.of(context).logoDefaultValue}')
-                          ]),
+                          // Row(children: [
+                          //   SvgPicture.asset(
+                          //       ThingsboardImage.thingsBoardWithTitle,
+                          //       height: 25,
+                          //       color: Theme.of(context).primaryColor,
+                          //       semanticsLabel:
+                          //           '${S.of(context).logoDefaultValue}')
+                          // ]),
+                          Text('IOT App', style: TextStyle(fontSize: 25, color: AppColors.redColor),),
                           SizedBox(height: 32),
                           Row(children: [
                             Text('${S.of(context).loginNotification}',
