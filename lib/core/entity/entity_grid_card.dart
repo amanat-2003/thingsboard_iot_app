@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 
 import 'entities_base.dart';
 
@@ -6,6 +8,7 @@ class EntityGridCard<T> extends StatelessWidget {
   final T _entity;
   final EntityTapFunction<T>? _onEntityTap;
   final EntityCardWidgetBuilder<T> _entityCardWidgetBuilder;
+  // ignore: unused_field
   final EntityCardSettings _settings;
 
   EntityGridCard(T entity,
@@ -23,24 +26,19 @@ class EntityGridCard<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
-        child: Container(
-          child: Card(
-              margin: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-              elevation: 0,
-              child: _entityCardWidgetBuilder(context, _entity)),
-          decoration: _settings.dropShadow
-              ? BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withAlpha((255 * 0.05).ceil()),
-                        blurRadius: 6.0,
-                        offset: Offset(0, 4))
-                  ],
-                )
-              : null,
+        child: Card(
+          margin: EdgeInsets.zero,
+          color: isDarkMode(context)
+              ? AppColors.primaryContainerDarkMode
+              : AppColors.primaryContainerLightMode,
+          // color: isDarkMode(context)
+          //     ? AppColors.backgroundDarkMode
+          //     : AppColors.backgroundLightMode,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(4),
+          // ),
+          elevation: 5,
+          child: _entityCardWidgetBuilder(context, _entity),
         ),
         onTap: () {
           if (_onEntityTap != null) {

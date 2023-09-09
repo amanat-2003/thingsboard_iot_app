@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iot_app/config/routes/router.dart';
+import 'package:iot_app/core/auth/login/login_page_email.dart';
 import 'package:iot_app/core/auth/login/reset_password_request_page.dart';
 import 'package:iot_app/core/auth/login/two_factor_authentication_page.dart';
 import 'package:iot_app/core/context/tb_context.dart';
@@ -12,6 +13,11 @@ class AuthRoutes extends TbRoutes {
   late var loginHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return LoginPage(tbContext);
+  });
+
+  late var emailLoginHandler = Handler(
+      handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    return EmailLoginPage(tbContext);
   });
 
   late var resetPasswordRequestHandler = Handler(
@@ -29,6 +35,7 @@ class AuthRoutes extends TbRoutes {
   @override
   void doRegisterRoutes(router) {
     router.define("/login", handler: loginHandler);
+    router.define("/login/email", handler: emailLoginHandler);
     router.define("/login/resetPasswordRequest",
         handler: resetPasswordRequestHandler);
     router.define("/login/mfa", handler: twoFactorAuthenticationHandler);

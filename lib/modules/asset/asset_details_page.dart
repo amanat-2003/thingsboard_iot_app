@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/entity/entity_details_page.dart';
 import 'package:iot_app/generated/l10n.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 class AssetDetailsPage extends EntityDetailsPage<AssetInfo> {
@@ -25,18 +27,61 @@ class AssetDetailsPage extends EntityDetailsPage<AssetInfo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text('${S.of(context).assetName}', style: labelTextStyle),
-              Text(asset.name, style: valueTextStyle),
+              Text('${S.of(context).assetName}',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(asset.name,
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('${S.of(context).type}', style: labelTextStyle),
-              Text(asset.type, style: valueTextStyle),
+              Text('${S.of(context).type}',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(asset.type,
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('${S.of(context).label}', style: labelTextStyle),
-              Text(asset.label ?? '', style: valueTextStyle),
+              Text('${S.of(context).label}',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(asset.label ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
               Text('${S.of(context).assignedToCustomer}',
-                  style: labelTextStyle),
-              Text(asset.customerTitle ?? '', style: valueTextStyle),
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(asset.customerTitle ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
             ]));
   }
 }

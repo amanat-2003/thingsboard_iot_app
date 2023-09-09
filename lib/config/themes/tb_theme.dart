@@ -1,82 +1,123 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/utils/transition/page_transitions.dart';
 
-const int _tbPrimaryColorValue = 0xFF305680;
-const Color _tbPrimaryColor = Color(_tbPrimaryColorValue);
-const Color _tbSecondaryColor = Color(0xFF527dad);
-const Color _tbDarkPrimaryColor = Color(0xFF9fa8da);
+// var tbTypography = Typography.material2018();
 
-const int _tbTextColorValue = 0xFF282828;
-const Color _tbTextColor = Color(_tbTextColorValue);
+// final ThemeData lightTheme = ThemeData(
+//   useMaterial3: true,
+//   scaffoldBackgroundColor: AppColors.backgroundLightMode,
+//   colorScheme: AppColors.lightColorScheme,
+//   textTheme: GoogleFonts.latoTextTheme(),
+//   brightness: Brightness.light,
+// );
 
-var tbTypography = Typography.material2018();
-
-const tbMatIndigo = MaterialColor(
-  _tbPrimaryColorValue,
-  <int, Color>{
-    50: Color(0xFFE8EAF6),
-    100: Color(0xFFC5CAE9),
-    200: Color(0xFF9FA8DA),
-    300: Color(0xFF7986CB),
-    400: Color(0xFF5C6BC0),
-    500: _tbPrimaryColor,
-    600: _tbSecondaryColor,
-    700: Color(0xFF303F9F),
-    800: Color(0xFF283593),
-    900: Color(0xFF1A237E),
-  },
-);
-
-const tbDarkMatIndigo = MaterialColor(
-  _tbPrimaryColorValue,
-  <int, Color>{
-    50: Color(0xFFE8EAF6),
-    100: Color(0xFFC5CAE9),
-    200: Color(0xFF9FA8DA),
-    300: Color(0xFF7986CB),
-    400: Color(0xFF5C6BC0),
-    500: _tbDarkPrimaryColor,
-    600: _tbSecondaryColor,
-    700: Color(0xFF303F9F),
-    800: _tbPrimaryColor,
-    900: Color(0xFF1A237E),
-  },
-);
-
-final ThemeData theme = ThemeData(primarySwatch: tbMatIndigo);
-
-ThemeData tbTheme = ThemeData(
-    primarySwatch: tbMatIndigo,
-    colorScheme: theme.colorScheme.copyWith(secondary: Colors.deepOrange),
-    scaffoldBackgroundColor: Color(0xFFFAFAFA),
-    textTheme: tbTypography.black,
-    primaryTextTheme: tbTypography.black,
-    typography: tbTypography,
-    appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: _tbTextColor,
-        /* titleTextStyle: TextStyle(
-          color: _tbTextColor
+final ThemeData nqLightTheme = ThemeData(
+  useMaterial3: true,
+  scaffoldBackgroundColor: AppColors.backgroundLightMode,
+  colorScheme: AppColors.lightColorScheme,
+  textTheme: GoogleFonts.latoTextTheme(),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(vertical: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
-      toolbarTextStyle: TextStyle(
-            color: _tbTextColor
-      ), */
-        iconTheme: IconThemeData(color: _tbTextColor)),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
-        selectedItemColor: _tbPrimaryColor,
-        unselectedItemColor: _tbPrimaryColor.withAlpha((255 * 0.38).ceil()),
-        showSelectedLabels: true,
-        showUnselectedLabels: true),
-    pageTransitionsTheme: PageTransitionsTheme(builders: {
+      backgroundColor: AppColors.darkSeedColor,
+      foregroundColor: AppColors.whiteColor,
+      // primary: AppColors.whiteColor,
+      // onSurface: AppColors.darkSeedColor,
+    ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: TextStyle(fontSize: 13),
+    floatingLabelBehavior: FloatingLabelBehavior.always,
+    labelStyle: TextStyle(
+      color: AppColors.onSurfaceDarkMode,
+      fontSize: 17,
+    ),
+  ),
+  appBarTheme: AppBarTheme(elevation: 0),
+  brightness: Brightness.light,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
+  ),
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: {
       TargetPlatform.iOS: FadeOpenPageTransitionsBuilder(),
       TargetPlatform.android: FadeOpenPageTransitionsBuilder(),
-    }));
+    },
+  ),
+);
 
-final ThemeData darkTheme =
-    ThemeData(primarySwatch: tbDarkMatIndigo, brightness: Brightness.dark);
+// final ThemeData darkTheme = ThemeData(
+//   useMaterial3: true,
+//   scaffoldBackgroundColor: AppColors.backgroundDarkMode,
+//   colorScheme: AppColors.darkColorScheme,
+//   elevatedButtonTheme: ElevatedButtonThemeData(
+//     style: ElevatedButton.styleFrom(
+//       padding: EdgeInsets.symmetric(vertical: 16),
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(10.0),
+//       ),
+//       backgroundColor: AppColors.primaryDarkMode,
+//       foregroundColor: AppColors.whiteColor,
+//       // primary: AppColors.whiteColor,
+//       // onSurface: AppColors.primaryDarkMode,
+//     ),
+//   ),
+//   textTheme: GoogleFonts.latoTextTheme(),
+//   brightness: Brightness.dark,
+//   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+//     showSelectedLabels: true,
+//     showUnselectedLabels: true,
+//   ),
+//   pageTransitionsTheme: PageTransitionsTheme(
+//     builders: {
+//       TargetPlatform.iOS: FadeOpenPageTransitionsBuilder(),
+//       TargetPlatform.android: FadeOpenPageTransitionsBuilder(),
+//     },
+//   ),
+// );
 
-ThemeData tbDarkTheme = ThemeData(
-    primarySwatch: tbDarkMatIndigo,
-    colorScheme: darkTheme.colorScheme.copyWith(secondary: Colors.deepOrange),
-    brightness: Brightness.dark);
+
+final ThemeData nqDarkTheme = ThemeData(
+  useMaterial3: true,
+  scaffoldBackgroundColor: AppColors.backgroundDarkMode,
+  colorScheme: AppColors.darkColorScheme,
+  textTheme: GoogleFonts.latoTextTheme(),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(vertical: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      backgroundColor: AppColors.darkSeedColor,
+      foregroundColor: AppColors.whiteColor,
+      // primary: AppColors.whiteColor,
+      // onSurface: AppColors.darkSeedColor,
+    ),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: TextStyle(fontSize: 13),
+    floatingLabelBehavior: FloatingLabelBehavior.always,
+    labelStyle: TextStyle(
+      color: AppColors.onSurfaceDarkMode,
+      fontSize: 17,
+    ),
+  ),
+  appBarTheme: AppBarTheme(elevation: 0),
+  brightness: Brightness.dark,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
+  ),
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: {
+      TargetPlatform.iOS: FadeOpenPageTransitionsBuilder(),
+      TargetPlatform.android: FadeOpenPageTransitionsBuilder(),
+    },
+  ),
+);

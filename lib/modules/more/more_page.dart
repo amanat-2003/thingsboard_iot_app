@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/generated/l10n.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 class MorePage extends TbContextWidget {
@@ -15,55 +17,90 @@ class _MorePageState extends TbContextState<MorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-          padding: EdgeInsets.fromLTRB(16, 40, 16, 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.account_circle,
-                      size: 48, color: Color(0xFFAFAFAF)),
-                  Spacer(),
-                  IconButton(
-                      icon: Icon(Icons.settings, color: Color(0xFFAFAFAF)),
-                      onPressed: () async {
-                        await navigateTo('/profile');
-                        setState(() {});
-                      })
-                ],
-              ),
-              SizedBox(height: 22),
-              Text(_getUserDisplayName(),
-                  style: TextStyle(
-                      color: Color(0xFF282828),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20,
-                      height: 23 / 20)),
-              SizedBox(height: 2),
-              Text(_getAuthorityName(context),
-                  style: TextStyle(
-                      color: Color(0xFFAFAFAF),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      height: 16 / 14)),
-              SizedBox(height: 24),
-              Divider(color: Color(0xFFEDEDED)),
-              SizedBox(height: 8),
-              buildMoreMenuItems(context),
-              SizedBox(height: 8),
-              Divider(color: Color(0xFFEDEDED)),
-              SizedBox(height: 8),
-              GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
+        backgroundColor: isDarkMode(context)
+            ? AppColors.backgroundDarkMode
+            : AppColors.backgroundLightMode,
+        extendBody: true,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _getUserDisplayName(),
+                          style: TextStyle(
+                            color: isDarkMode(context)
+                                ? AppColors.whiteColor
+                                : AppColors.onPrimaryContainerLightMode,
+                            // color: isDarkMode(context)
+                            //     ? AppColors.onPrimaryContainerDarkMode
+                            //     : AppColors.onPrimaryContainerLightMode,
+                            fontSize: 22,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          _getAuthorityName(context),
+                          style: TextStyle(
+                              color: isDarkMode(context)
+                                  ? AppColors.tertiaryDarkMode
+                                  : AppColors.tertiaryLightMode,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                              height: 16 / 14),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    IconButton(
+                        icon: Icon(
+                          Icons.settings,
+                          color: isDarkMode(context)
+                              ? AppColors.onPrimaryContainerDarkMode
+                              : AppColors.onPrimaryContainerLightMode,
+                        ),
+                        onPressed: () async {
+                          await navigateTo('/profile');
+                          setState(() {});
+                        })
+                  ],
+                ),
+                // SizedBox(height: 22),
+                SizedBox(height: 24),
+                Divider(
+                  color: isDarkMode(context)
+                      ? AppColors.outlineVariantDarkMode
+                      : Color(0xFFEDEDED),
+                ),
+                SizedBox(height: 8),
+                buildMoreMenuItems(context),
+                SizedBox(height: 8),
+                Divider(
+                  color: isDarkMode(context)
+                      ? AppColors.outlineVariantDarkMode
+                      : Color(0xFFEDEDED),
+                ),
+                SizedBox(height: 8),
+                GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
                       height: 48,
                       child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 18),
-                          child: Row(mainAxisSize: MainAxisSize.max, children: [
+                        padding:
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 18),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
                             Icon(Icons.logout, color: Color(0xFFE04B2F)),
                             SizedBox(width: 34),
                             Text('${S.of(context).logout}',
@@ -73,12 +110,16 @@ class _MorePageState extends TbContextState<MorePage> {
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
                                     height: 20 / 14))
-                          ]))),
-                  onTap: () {
-                    tbClient.logout(
-                        requestConfig: RequestConfig(ignoreErrors: true));
-                  })
-            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      tbClient.logout(
+                          requestConfig: RequestConfig(ignoreErrors: true));
+                    })
+              ],
+            ),
           ),
         ));
   }
@@ -87,25 +128,41 @@ class _MorePageState extends TbContextState<MorePage> {
     List<Widget> items =
         MoreMenuItem.getItems(tbContext, context).map((menuItem) {
       return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-              height: 48,
-              child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 18),
-                  child: Row(mainAxisSize: MainAxisSize.max, children: [
-                    Icon(menuItem.icon, color: Color(0xFF282828)),
-                    SizedBox(width: 34),
-                    Text(menuItem.title,
-                        style: TextStyle(
-                            color: Color(0xFF282828),
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            height: 20 / 14))
-                  ]))),
-          onTap: () {
-            navigateTo(menuItem.path);
-          });
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 48,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 18),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Icon(
+                  menuItem.icon,
+                  color: isDarkMode(context)
+                      ? AppColors.primaryDarkMode
+                      : Color(0xFF282828),
+                ),
+                SizedBox(width: 34),
+                Text(
+                  menuItem.title,
+                  style: TextStyle(
+                    color: isDarkMode(context)
+                        ? AppColors.primaryDarkMode
+                        : Color(0xFF282828),
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    height: 20 / 14,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        onTap: () {
+          navigateTo(menuItem.path);
+        },
+      );
     }).toList();
     return Column(children: items);
   }

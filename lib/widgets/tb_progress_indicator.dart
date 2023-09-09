@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/constants/assets_path.dart';
 
 class TbProgressIndicator extends ProgressIndicator {
@@ -25,7 +26,9 @@ class TbProgressIndicator extends ProgressIndicator {
   _TbProgressIndicatorState createState() => _TbProgressIndicatorState();
 
   Color _getValueColor(BuildContext context) =>
-      valueColor?.value ?? Theme.of(context).primaryColor;
+      valueColor?.value ?? AppColors.inversePrimaryDarkMode;
+      // valueColor?.value ?? Colors.transparent;
+      // valueColor?.value ?? Colors.red;
 }
 
 class _TbProgressIndicatorState extends State<TbProgressIndicator>
@@ -61,15 +64,23 @@ class _TbProgressIndicatorState extends State<TbProgressIndicator>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SvgPicture.asset(ThingsboardImage.thingsboardCenter,
+        Positioned.fill(
+          left: 5,
+          top: 5,
+          right: 5,
+          bottom: 10,
+          child: SvgPicture.asset(
+            ThingsboardImage.aquaCareCenter,
             height: widget.size,
             width: widget.size,
-            color: widget._getValueColor(context)),
+            // color: widget._getValueColor(context),
+          ),
+        ),
         AnimatedBuilder(
           animation: _rotation,
-          child: SvgPicture.asset(ThingsboardImage.thingsboardOuter,
-              height: widget.size,
-              width: widget.size,
+          child: SvgPicture.asset(ThingsboardImage.aquaCareOuter,
+              height: widget.size + 20,
+              width: widget.size + 20,
               color: widget._getValueColor(context)),
           builder: (BuildContext context, Widget? child) {
             return Transform.rotate(

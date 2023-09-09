@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
@@ -44,57 +46,61 @@ class _QrCodeScannerPageState extends TbPageState<QrCodeScannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: isDarkMode(context)
+            ? AppColors.backgroundDarkMode
+            : AppColors.backgroundLightMode,
+        extendBody: true,
         body: Stack(
-      children: [
-        _buildQrView(context),
-        Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: kToolbarHeight,
-            child: Center(
-                child: Text('Scan a code',
-                    style: TextStyle(color: Colors.white, fontSize: 20)))),
-        Positioned(
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.white),
-            elevation: 0,
-            actions: <Widget>[
-              IconButton(
-                icon: FutureBuilder(
-                    future: controller?.getFlashStatus(),
-                    builder: (context, snapshot) {
-                      return Icon(snapshot.data == false
-                          ? Icons.flash_on
-                          : Icons.flash_off);
-                    }),
-                onPressed: () async {
-                  await controller?.toggleFlash();
-                  setState(() {});
-                },
-                tooltip: 'Toggle flash',
+          children: [
+            _buildQrView(context),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: kToolbarHeight,
+                child: Center(
+                    child: Text('Scan a code',
+                        style: TextStyle(color: Colors.white, fontSize: 20)))),
+            Positioned(
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                foregroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white),
+                elevation: 0,
+                actions: <Widget>[
+                  IconButton(
+                    icon: FutureBuilder(
+                        future: controller?.getFlashStatus(),
+                        builder: (context, snapshot) {
+                          return Icon(snapshot.data == false
+                              ? Icons.flash_on
+                              : Icons.flash_off);
+                        }),
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                      setState(() {});
+                    },
+                    tooltip: 'Toggle flash',
+                  ),
+                  IconButton(
+                    icon: FutureBuilder(
+                        future: controller?.getCameraInfo(),
+                        builder: (context, snapshot) {
+                          return Icon(snapshot.data == CameraFacing.front
+                              ? Icons.camera_rear
+                              : Icons.camera_front);
+                        }),
+                    onPressed: () async {
+                      await controller?.flipCamera();
+                      setState(() {});
+                    },
+                    tooltip: 'Toggle camera',
+                  ),
+                ],
               ),
-              IconButton(
-                icon: FutureBuilder(
-                    future: controller?.getCameraInfo(),
-                    builder: (context, snapshot) {
-                      return Icon(snapshot.data == CameraFacing.front
-                          ? Icons.camera_rear
-                          : Icons.camera_front);
-                    }),
-                onPressed: () async {
-                  await controller?.flipCamera();
-                  setState(() {});
-                },
-                tooltip: 'Toggle camera',
-              ),
-            ],
-          ),
-        )
-      ],
-    ));
+            )
+          ],
+        ));
   }
 
   Widget _buildQrView(BuildContext context) {

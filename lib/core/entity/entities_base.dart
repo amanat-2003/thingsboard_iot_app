@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/generated/l10n.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/utils/utils.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
@@ -99,7 +101,9 @@ mixin ContactBasedBase<T extends ContactBased, P> on EntitiesBase<T, P> {
                             alignment: Alignment.centerLeft,
                             child: Text('${contact.getName()}',
                                 style: TextStyle(
-                                    color: Color(0xFF282828),
+                                    color: isDarkMode(context)
+                                        ? AppColors.onPrimaryContainerDarkMode
+                                        : AppColors.onTertiaryDarkMode,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     height: 20 / 14))),
@@ -108,7 +112,9 @@ mixin ContactBasedBase<T extends ContactBased, P> on EntitiesBase<T, P> {
                                 DateTime.fromMillisecondsSinceEpoch(
                                     contact.createdTime!)),
                             style: TextStyle(
-                                color: Color(0xFFAFAFAF),
+                                color: isDarkMode(context)
+                                    ? AppColors.primaryDarkMode
+                                    : AppColors.secondaryLightMode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
                                 height: 16 / 12))
@@ -126,14 +132,21 @@ mixin ContactBasedBase<T extends ContactBased, P> on EntitiesBase<T, P> {
                   if (address != null)
                     Text(address,
                         style: TextStyle(
-                            color: Color(0xFFAFAFAF),
+                            color: isDarkMode(context)
+                                ? AppColors.primaryDarkMode
+                                : AppColors.secondaryLightMode,
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                             height: 16 / 12)),
                 ],
               )),
           SizedBox(width: 16),
-          Icon(Icons.chevron_right, color: Color(0xFFACACAC)),
+          Icon(
+            Icons.chevron_right,
+            color: isDarkMode(context)
+                ? AppColors.onPrimaryContainerDarkMode
+                : AppColors.onTertiaryDarkMode,
+          ),
           SizedBox(width: 8)
         ],
       ),
@@ -367,7 +380,11 @@ class FirstPageExceptionIndicator extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : AppColors.onPrimaryContainerLightMode,
+                  ),
             ),
             if (message != null)
               const SizedBox(
@@ -377,6 +394,11 @@ class FirstPageExceptionIndicator extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: isDarkMode(context)
+                      ? AppColors.onSurfaceVariantDarkMode
+                      : AppColors.secondaryLightMode,
+                ),
               ),
             if (onTryAgain != null)
               const SizedBox(
@@ -384,7 +406,7 @@ class FirstPageExceptionIndicator extends StatelessWidget {
               ),
             if (onTryAgain != null)
               SizedBox(
-                height: 50,
+                // height: 50,
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: onTryAgain,

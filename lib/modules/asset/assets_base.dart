@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/entity/entities_base.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 mixin AssetsBase on EntitiesBase<AssetInfo, PageLink> {
@@ -64,7 +66,10 @@ mixin AssetsBase on EntitiesBase<AssetInfo, PageLink> {
                                   alignment: Alignment.centerLeft,
                                   child: Text('${asset.name}',
                                       style: TextStyle(
-                                          color: Color(0xFF282828),
+                                          color: isDarkMode(context)
+                                              ? AppColors
+                                                  .onPrimaryContainerDarkMode
+                                              : AppColors.onTertiaryDarkMode,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                           height: 20 / 14))),
@@ -73,7 +78,9 @@ mixin AssetsBase on EntitiesBase<AssetInfo, PageLink> {
                                       DateTime.fromMillisecondsSinceEpoch(
                                           asset.createdTime!)),
                                   style: TextStyle(
-                                      color: Color(0xFFAFAFAF),
+                                      color: isDarkMode(context)
+                                          ? AppColors.primaryDarkMode
+                                          : AppColors.secondaryLightMode,
                                       fontSize: 12,
                                       fontWeight: FontWeight.normal,
                                       height: 16 / 12))
@@ -81,14 +88,21 @@ mixin AssetsBase on EntitiesBase<AssetInfo, PageLink> {
                         SizedBox(height: 4),
                         Text('${asset.type}',
                             style: TextStyle(
-                                color: Color(0xFFAFAFAF),
+                                color: isDarkMode(context)
+                                    ? AppColors.primaryDarkMode
+                                    : AppColors.secondaryLightMode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.normal,
                                 height: 1.33))
                       ],
                     )),
                 SizedBox(width: 16),
-                Icon(Icons.chevron_right, color: Color(0xFFACACAC)),
+                Icon(
+                  Icons.chevron_right,
+                  color: isDarkMode(context)
+                      ? AppColors.onPrimaryContainerDarkMode
+                      : AppColors.onTertiaryDarkMode,
+                ),
                 SizedBox(width: 16)
               ],
             ),

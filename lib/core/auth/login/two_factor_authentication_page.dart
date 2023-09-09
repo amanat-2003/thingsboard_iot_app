@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:iot_app/constants/app_colors.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:iot_app/core/auth/login/login_page_background.dart';
 import 'package:iot_app/core/context/tb_context.dart';
@@ -121,13 +122,19 @@ class _TwoFactorAuthenticationPageState
           return await _goBack();
         },
         child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: isDarkMode(context)
+                ? AppColors.backgroundDarkMode
+                : AppColors.backgroundLightMode,
+            extendBody: true,
             resizeToAvoidBottomInset: false,
             body: Stack(children: [
               LoginPageBackground(),
               SizedBox.expand(
                 child: Scaffold(
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: isDarkMode(context)
+                      ? AppColors.backgroundDarkMode
+                      : AppColors.backgroundLightMode,
+                  extendBody: true,
                   appBar: TbAppBar(
                     tbContext,
                     title: Text('${S.of(context).verifyYourIdentity}'),

@@ -1,9 +1,10 @@
 abstract class ThingsboardImage {
-  static final thingsBoardWithTitle =
-      'assets/images/thingsboard_with_title.svg';
-  static final thingsboard = 'assets/images/thingsboard.svg';
-  static final thingsboardOuter = 'assets/images/thingsboard_outer.svg';
-  static final thingsboardCenter = 'assets/images/thingsboard_center.svg';
+  static final aquaCraftWithTitle =
+      'AquaCraft';
+  static final aquaCare = 'assets/images/OnlyLogo.svg';
+  static final aquaCareOuter = 'assets/images/thingsboard_outer.svg';
+  static final aquaCareCenter = 'assets/images/OnlyLogo.svg';
+  static final aquaCareLogin = 'assets/images/login.svg';
   static final dashboardPlaceholder = 'assets/images/dashboard-placeholder.svg';
   static final deviceProfilePlaceholder =
       'assets/images/device-profile-placeholder.svg';

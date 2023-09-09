@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 import 'package:iot_app/widgets/tb_progress_indicator.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 abstract class EntityDetailsPage<T extends BaseData> extends TbPageWidget {
-  final labelTextStyle =
-      TextStyle(color: Color(0xFF757575), fontSize: 14, height: 20 / 14);
+  final labelTextStyle = TextStyle(fontSize: 14, height: 20 / 14);
 
-  final valueTextStyle =
-      TextStyle(color: Color(0xFF282828), fontSize: 14, height: 20 / 14);
+  final valueTextStyle = TextStyle(fontSize: 14, height: 20 / 14);
 
   final String _defaultTitle;
   final String _entityId;
@@ -71,7 +71,10 @@ class _EntityDetailsPageState<T extends BaseData>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode(context)
+          ? AppColors.backgroundDarkMode
+          : AppColors.backgroundLightMode,
+      extendBody: true,
       appBar: widget._hideAppBar
           ? null
           : TbAppBar(
@@ -89,19 +92,20 @@ class _EntityDetailsPageState<T extends BaseData>
                             alignment: Alignment.centerLeft,
                             child: Text(title,
                                 style: widget._subTitle != null
-                                    ? Theme.of(context)
-                                        .primaryTextTheme
-                                        .headline6!
-                                        .copyWith(fontSize: 16)
+                                    ? TextStyle(
+                                        color: isDarkMode(context)
+                                            ? AppColors.whiteColor
+                                            : AppColors.blackColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                      )
                                     : null)),
                         if (widget._subTitle != null)
                           Text(widget._subTitle!,
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline6!
-                                      .color!
-                                      .withAlpha((0.38 * 255).ceil()),
+                                  color: isDarkMode(context)
+                                      ? AppColors.onSurfaceVariantDarkMode
+                                      : Color(0xFF757575),
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
                                   height: 16 / 12))
@@ -156,11 +160,35 @@ abstract class ContactBasedDetailsPage<T extends ContactBased>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text('Title', style: labelTextStyle),
-              Text(contact.getName(), style: valueTextStyle),
+              Text(
+                'Title',
+                style: labelTextStyle.copyWith(
+                  color: isDarkMode(context)
+                      ? AppColors.onSurfaceVariantDarkMode
+                      : Color(0xFF757575),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(contact.getName(),
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('Country', style: labelTextStyle),
-              Text(contact.country ?? '', style: valueTextStyle),
+              Text('Country',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.country ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
               Row(
                 mainAxisSize: MainAxisSize.max,
@@ -171,8 +199,19 @@ abstract class ContactBasedDetailsPage<T extends ContactBased>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text('City', style: labelTextStyle),
-                          Text(contact.city ?? '', style: valueTextStyle),
+                          Text('City',
+                              style: labelTextStyle.copyWith(
+                                color: isDarkMode(context)
+                                    ? AppColors.onSurfaceVariantDarkMode
+                                    : Color(0xFF757575),
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Text(contact.city ?? '',
+                              style: valueTextStyle.copyWith(
+                                color: isDarkMode(context)
+                                    ? AppColors.whiteColor
+                                    : Color(0xFF282828),
+                              )),
                         ],
                       )),
                   Flexible(
@@ -181,27 +220,93 @@ abstract class ContactBasedDetailsPage<T extends ContactBased>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text('State / Province', style: labelTextStyle),
-                          Text(contact.state ?? '', style: valueTextStyle),
+                          Text('State / Province',
+                              style: labelTextStyle.copyWith(
+                                color: isDarkMode(context)
+                                    ? AppColors.onSurfaceVariantDarkMode
+                                    : Color(0xFF757575),
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Text(contact.state ?? '',
+                              style: valueTextStyle.copyWith(
+                                color: isDarkMode(context)
+                                    ? AppColors.whiteColor
+                                    : Color(0xFF282828),
+                              )),
                         ],
                       )),
                 ],
               ),
               SizedBox(height: 16),
-              Text('Zip / Postal Code', style: labelTextStyle),
-              Text(contact.zip ?? '', style: valueTextStyle),
+              Text('Zip / Postal Code',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.zip ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('Address', style: labelTextStyle),
-              Text(contact.address ?? '', style: valueTextStyle),
+              Text('Address',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.address ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('Address 2', style: labelTextStyle),
-              Text(contact.address2 ?? '', style: valueTextStyle),
+              Text('Address 2',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.address2 ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('Phone', style: labelTextStyle),
-              Text(contact.phone ?? '', style: valueTextStyle),
+              Text('Phone',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.phone ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
               SizedBox(height: 16),
-              Text('Email', style: labelTextStyle),
-              Text(contact.email ?? '', style: valueTextStyle),
+              Text('Email',
+                  style: labelTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.onSurfaceVariantDarkMode
+                        : Color(0xFF757575),
+                    fontWeight: FontWeight.bold,
+                  )),
+              Text(contact.email ?? '',
+                  style: valueTextStyle.copyWith(
+                    color: isDarkMode(context)
+                        ? AppColors.whiteColor
+                        : Color(0xFF282828),
+                  )),
             ]));
   }
 }

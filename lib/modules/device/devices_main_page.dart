@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/modules/device/device_profiles_grid.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 class DevicesMainPage extends TbContextWidget {
@@ -25,7 +27,7 @@ class _DevicesMainPageState extends TbContextState<DevicesMainPage>
   Widget build(BuildContext context) {
     super.build(context);
     var deviceProfilesList = DeviceProfilesGrid(tbContext, _pageLinkController);
-    return Scaffold(
+    return Scaffold(backgroundColor: isDarkMode(context)? AppColors.backgroundDarkMode: AppColors.backgroundLightMode,extendBody: true,
         appBar: TbAppBar(tbContext, title: Text(deviceProfilesList.title)),
         body: deviceProfilesList);
   }

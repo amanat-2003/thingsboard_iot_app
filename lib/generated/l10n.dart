@@ -153,7 +153,7 @@ class S {
   /// `ThingsBoard Logo`
   String get logoDefaultValue {
     return Intl.message(
-      'ThingsBoard Logo',
+      'NetIQ Logo',
       name: 'logoDefaultValue',
       desc: '',
       args: [],

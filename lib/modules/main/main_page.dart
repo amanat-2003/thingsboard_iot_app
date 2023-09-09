@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/generated/l10n.dart';
@@ -6,6 +7,7 @@ import 'package:iot_app/modules/alarm/alarms_page.dart';
 import 'package:iot_app/modules/device/devices_main_page.dart';
 import 'package:iot_app/modules/home/home_page.dart';
 import 'package:iot_app/modules/more/more_page.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 class TbMainNavigationItem {
@@ -43,7 +45,7 @@ class TbMainNavigationItem {
         TbMainNavigationItem(
             page: HomePage(tbContext),
             title: 'Home',
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.add_home_rounded),
             path: '/home')
       ];
       switch (tbContext.tbClient.getAuthUser()!.authority) {
@@ -55,12 +57,12 @@ class TbMainNavigationItem {
             TbMainNavigationItem(
                 page: AlarmsPage(tbContext),
                 title: 'Alarms',
-                icon: Icon(Icons.notifications),
+                icon: Icon(Icons.timer),
                 path: '/alarms'),
             TbMainNavigationItem(
                 page: DevicesMainPage(tbContext),
                 title: 'Devices',
-                icon: Icon(Icons.devices_other),
+                icon: Icon(Icons.electric_meter_rounded),
                 path: '/devices')
           ]);
           break;
@@ -74,7 +76,7 @@ class TbMainNavigationItem {
       items.add(TbMainNavigationItem(
           page: MorePage(tbContext),
           title: 'More',
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.more_rounded),
           path: '/more'));
       return items;
     } else {
@@ -83,7 +85,9 @@ class TbMainNavigationItem {
   }
 
   static void changeItemsTitleIntl(
-      List<TbMainNavigationItem> items, BuildContext context) {
+    List<TbMainNavigationItem> items,
+    BuildContext context,
+  ) {
     for (var item in items) {
       switch (item.path) {
         case '/home':
@@ -152,36 +156,47 @@ class _MainPageState extends TbPageState<MainPage>
   Widget build(BuildContext context) {
     TbMainNavigationItem.changeItemsTitleIntl(_tabItems, context);
     return WillPopScope(
-        onWillPop: () async {
-          if (!await tbContext.willPop()) {
-            return false;
-          }
-          if (_tabController.index > 0) {
-            _setIndex(0);
-            return false;
-          }
-          return true;
-        },
-        child: Scaffold(
-            body: TabBarView(
-              physics: tbContext.homeDashboard != null
-                  ? NeverScrollableScrollPhysics()
-                  : null,
-              controller: _tabController,
-              children: _tabItems.map((item) => item.page).toList(),
-            ),
-            bottomNavigationBar: ValueListenableBuilder<int>(
-              valueListenable: _currentIndexNotifier,
-              builder: (context, index, child) => BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: index,
-                  onTap: (int index) =>
-                      _setIndex(index) /*_currentIndex = index*/,
-                  items: _tabItems
-                      .map((item) => BottomNavigationBarItem(
-                          icon: item.icon, label: item.title))
-                      .toList()),
-            )));
+      onWillPop: () async {
+        if (!await tbContext.willPop()) {
+          return false;
+        }
+        if (_tabController.index > 0) {
+          _setIndex(0);
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(backgroundColor: isDarkMode(context)? AppColors.backgroundDarkMode: AppColors.backgroundLightMode,extendBody: true,
+        body: TabBarView(
+          physics: tbContext.homeDashboard != null
+              ? NeverScrollableScrollPhysics()
+              : null,
+          controller: _tabController,
+          children: _tabItems.map((item) => item.page).toList(),
+        ),
+        bottomNavigationBar: ValueListenableBuilder<int>(
+          valueListenable: _currentIndexNotifier,
+          builder: (context, index, child) => BottomNavigationBar(
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
+            enableFeedback: false,
+            selectedItemColor: isDarkMode(context)? AppColors.tertiaryDarkMode: AppColors.surfaceTintLightMode,
+            backgroundColor: isDarkMode(context)? AppColors.navigationbarColorDarkMode: AppColors.navigationbarColorLightMode,
+            selectedFontSize: 11,
+            unselectedFontSize: 11,
+            iconSize: 27,
+            currentIndex: index,
+            onTap: (int index) => _setIndex(index) /*_currentIndex = index*/,
+            items: _tabItems
+                .map((item) => BottomNavigationBarItem(
+                      icon: item.icon,
+                      label: item.title,
+                    ))
+                .toList(),
+          ),
+        ),
+      ),
+    );
   }
 
   int _indexFromPath(String path) {

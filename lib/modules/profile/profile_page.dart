@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/generated/l10n.dart';
 import 'package:iot_app/modules/profile/change_password_page.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 import 'package:iot_app/core/context/tb_context.dart';
@@ -42,7 +44,10 @@ class _ProfilePageState extends TbPageState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: isDarkMode(context)
+            ? AppColors.backgroundDarkMode
+            : AppColors.backgroundLightMode,
+        extendBody: true,
         appBar: TbAppBar(
           tbContext,
           title: const Text('Profile'),
@@ -64,56 +69,94 @@ class _ProfilePageState extends TbPageState<ProfilePage> {
           children: [
             SizedBox.expand(
               child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: SingleChildScrollView(
-                      child: FormBuilder(
+                padding: EdgeInsets.all(16),
+                child: SingleChildScrollView(
+                  child: FormBuilder(
                     key: _profileFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(height: 16),
-                          FormBuilderTextField(
-                            name: 'email',
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText:
-                                      '${S.of(context).emailRequireText}'),
-                              FormBuilderValidators.email(
-                                  errorText:
-                                      '${S.of(context).emailInvalidText}')
-                            ]),
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: '${S.of(context).emailStar}'),
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 16),
+                        FormBuilderTextField(
+                          name: 'email',
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                                errorText: '${S.of(context).emailRequireText}'),
+                            FormBuilderValidators.email(
+                                errorText: '${S.of(context).emailInvalidText}')
+                          ]),
+                          style: TextStyle(
+                            color: isDarkMode(context)
+                                ? AppColors.whiteColor
+                                : AppColors.onPrimaryContainerLightMode,
+                            fontSize: 13,
                           ),
-                          SizedBox(height: 24),
-                          FormBuilderTextField(
-                            name: 'firstName',
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: '${S.of(context).firstNameUpper}'),
+                          decoration: (const InputDecoration())
+                              .applyDefaults(
+                                  Theme.of(context).inputDecorationTheme)
+                              .copyWith(
+                                labelStyle: TextStyle(fontSize: 20),
+                                labelText: '${S.of(context).emailStar}',
+                                // hintText: 'Eg: amanatsinghnain@gmail.com',
+                                hintText: 'Enter Your e-Mail',
+                              ),
+                        ),
+                        SizedBox(height: 24),
+                        FormBuilderTextField(
+                          name: 'firstName',
+                          style: TextStyle(
+                            color: isDarkMode(context)
+                                ? AppColors.whiteColor
+                                : AppColors.onPrimaryContainerLightMode,
+                            fontSize: 13,
                           ),
-                          SizedBox(height: 24),
-                          FormBuilderTextField(
-                            name: 'lastName',
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: '${S.of(context).lastNameUpper}'),
+                          decoration: (const InputDecoration())
+                              .applyDefaults(
+                                  Theme.of(context).inputDecorationTheme)
+                              .copyWith(
+                                labelStyle: TextStyle(fontSize: 20),
+                                labelText: '${S.of(context).firstNameUpper}',
+                                // hintText: 'Eg: amanatsinghnain@gmail.com',
+                                hintText: 'Enter Your e-Mail',
+                              ),
+                        ),
+                        SizedBox(height: 24),
+                        FormBuilderTextField(
+                          name: 'lastName',
+                          style: TextStyle(
+                            color: isDarkMode(context)
+                                ? AppColors.whiteColor
+                                : AppColors.onPrimaryContainerLightMode,
+                            fontSize: 13,
                           ),
-                          SizedBox(height: 24),
-                          OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                  padding: EdgeInsets.all(16),
-                                  alignment: Alignment.centerLeft),
-                              onPressed: () {
-                                _changePassword();
-                              },
-                              child: Center(
-                                  child:
-                                      Text('${S.of(context).changePassword}')))
-                        ]),
-                  ))),
+                          decoration: (const InputDecoration())
+                              .applyDefaults(
+                                  Theme.of(context).inputDecorationTheme)
+                              .copyWith(
+                                labelStyle: TextStyle(fontSize: 20),
+                                labelText: '${S.of(context).lastNameUpper}',
+                                // hintText: 'Eg: amanatsinghnain@gmail.com',
+                                hintText: 'Enter Your e-Mail',
+                              ),
+                        ),
+                        SizedBox(height: 24),
+                        ElevatedButton(
+                          child: Center(
+                            child: Text(
+                              '${S.of(context).changePassword}',
+                              style: TextStyle(fontSize: 16, height: 0.9),
+                            ),
+                          ),
+                          onPressed: () {
+                            _changePassword();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
             ValueListenableBuilder<bool>(
                 valueListenable: _isLoadingNotifier,

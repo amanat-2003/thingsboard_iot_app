@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/constants/assets_path.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
@@ -10,6 +11,7 @@ import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/generated/l10n.dart';
 import 'package:iot_app/utils/services/device_profile_cache.dart';
 import 'package:iot_app/utils/services/entity_query_api.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/utils/utils.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
@@ -142,169 +144,164 @@ class _DeviceCardState extends TbContextState<DeviceCard> {
   }
 
   Widget buildCard(BuildContext context) {
-    return Stack(children: [
-      Positioned.fill(
-          child: Container(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                width: 4,
-                decoration: BoxDecoration(
-                    color: widget.device.attribute('active') == 'true'
-                        ? Color(0xFF008A00)
-                        : Color(0xFFAFAFAF),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        bottomLeft: Radius.circular(4))),
-              ))),
-      FutureBuilder<DeviceProfileInfo>(
-          future: deviceProfileFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              var profile = snapshot.data!;
-              bool hasDashboard = profile.defaultDashboardId != null;
-              Widget image;
-              BoxFit imageFit;
-              if (profile.image != null) {
-                image = Utils.imageFromBase64(profile.image!);
-                imageFit = BoxFit.contain;
-              } else {
-                image = SvgPicture.asset(
-                    ThingsboardImage.deviceProfilePlaceholder,
-                    color: Theme.of(context).primaryColor,
-                    colorBlendMode: BlendMode.overlay,
-                    semanticsLabel: 'Device');
-                imageFit = BoxFit.cover;
-              }
-              return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 20),
-                    Flexible(
-                        fit: FlexFit.tight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 12),
-                            Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  if (widget.displayImage)
-                                    Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4))),
-                                        child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(4)),
-                                            child: Stack(
-                                              children: [
-                                                Positioned.fill(
-                                                    child: FittedBox(
-                                                  fit: imageFit,
-                                                  child: image,
-                                                ))
-                                              ],
-                                            ))),
-                                  SizedBox(width: 12),
-                                  Flexible(
-                                      fit: FlexFit.tight,
-                                      child: Column(children: [
-                                        Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                  fit: FlexFit.tight,
-                                                  child: FittedBox(
-                                                      fit: BoxFit.scaleDown,
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                          '${widget.device.field('name')!}',
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF282828),
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              height:
-                                                                  20 / 14)))),
-                                              SizedBox(width: 12),
-                                              Text(
-                                                  entityDateFormat.format(DateTime
-                                                      .fromMillisecondsSinceEpoch(
-                                                          widget.device
-                                                              .createdTime!)),
-                                                  style: TextStyle(
-                                                      color: Color(0xFFAFAFAF),
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      height: 16 / 12))
-                                            ]),
-                                        SizedBox(height: 4),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+    return FutureBuilder<DeviceProfileInfo>(
+      future: deviceProfileFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData &&
+            snapshot.connectionState == ConnectionState.done) {
+          var profile = snapshot.data!;
+          bool hasDashboard = profile.defaultDashboardId != null;
+          Widget image;
+          BoxFit imageFit;
+          if (profile.image != null) {
+            image = Utils.imageFromBase64(profile.image!);
+            imageFit = BoxFit.contain;
+          } else {
+            image = SvgPicture.asset(ThingsboardImage.deviceProfilePlaceholder,
+                color: Theme.of(context).primaryColor,
+                colorBlendMode: BlendMode.overlay,
+                semanticsLabel: 'Device');
+            imageFit = BoxFit.cover;
+          }
+          return Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 20),
+                Flexible(
+                    fit: FlexFit.tight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 12),
+                        Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              if (widget.displayImage)
+                                Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4)),
+                                        child: Stack(
                                           children: [
-                                            Text(
-                                                '${widget.device.field('type')!}',
-                                                style: TextStyle(
-                                                    color: Color(0xFFAFAFAF),
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    height: 16 / 12)),
-                                            Text(
-                                                widget.device.attribute(
-                                                            'active') ==
-                                                        'true'
-                                                    ? '${S.of(context).active}'
-                                                    : '${S.of(context).inactive}',
-                                                style: TextStyle(
-                                                  color: widget.device
-                                                              .attribute(
-                                                                  'active') ==
-                                                          'true'
-                                                      ? Color(0xFF008A00)
-                                                      : Color(0xFFAFAFAF),
-                                                  fontSize: 12,
-                                                  height: 16 / 12,
-                                                  fontWeight: FontWeight.normal,
-                                                ))
+                                            Positioned.fill(
+                                                child: FittedBox(
+                                              fit: imageFit,
+                                              child: image,
+                                            ))
                                           ],
-                                        )
-                                      ])),
-                                  SizedBox(width: 16),
-                                  if (hasDashboard)
-                                    Icon(Icons.chevron_right,
-                                        color: Color(0xFFACACAC)),
-                                  if (hasDashboard) SizedBox(width: 16),
-                                ]),
-                            SizedBox(height: 12)
-                          ],
-                        ))
-                  ]);
-            } else {
-              return Container(
-                  height: 64,
-                  child: Center(
-                      child: RefreshProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(
-                              Theme.of(tbContext.currentState!.context)
-                                  .colorScheme
-                                  .primary))));
-            }
-          })
-    ]);
+                                        ))),
+                              SizedBox(width: 12),
+                              Flexible(
+                                  fit: FlexFit.tight,
+                                  child: Column(children: [
+                                    Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                              fit: FlexFit.tight,
+                                              child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                      '${widget.device.field('name')!}',
+                                                      style: TextStyle(
+                                                          color: isDarkMode(
+                                                                  context)
+                                                              ? AppColors
+                                                                  .onPrimaryContainerDarkMode
+                                                              : AppColors
+                                                                  .onTertiaryDarkMode,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 14,
+                                                          height: 20 / 14)))),
+                                          SizedBox(width: 12),
+                                          Text(
+                                              entityDateFormat.format(DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                      widget.device
+                                                          .createdTime!)),
+                                              style: TextStyle(
+                                                  color: isDarkMode(context)
+                                                      ? AppColors
+                                                          .primaryDarkMode
+                                                      : AppColors
+                                                          .secondaryLightMode,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 16 / 12))
+                                        ]),
+                                    SizedBox(height: 4),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('${widget.device.field('type')!}',
+                                            style: TextStyle(
+                                                color: isDarkMode(context)
+                                                    ? AppColors.primaryDarkMode
+                                                    : AppColors
+                                                        .secondaryLightMode,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.normal,
+                                                height: 16 / 12)),
+                                        Text(
+                                            widget.device.attribute('active') ==
+                                                    'true'
+                                                ? '${S.of(context).active}'
+                                                : '${S.of(context).inactive}',
+                                            style: TextStyle(
+                                              color: widget.device.attribute(
+                                                          'active') ==
+                                                      'true'
+                                                  ? Color(0xFF008A00)
+                                                  : Color(0xFFAFAFAF),
+                                              fontSize: 12,
+                                              height: 16 / 12,
+                                              fontWeight: FontWeight.normal,
+                                            ))
+                                      ],
+                                    )
+                                  ])),
+                              SizedBox(width: 16),
+                              if (hasDashboard)
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: isDarkMode(context)
+                                      ? AppColors.onPrimaryContainerDarkMode
+                                      : AppColors.onTertiaryDarkMode,
+                                ),
+                              if (hasDashboard) SizedBox(width: 16),
+                            ]),
+                        SizedBox(height: 12)
+                      ],
+                    ))
+              ]);
+        } else {
+          return Container(
+            height: 64,
+            child: Center(
+              child: RefreshProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(
+                  Theme.of(tbContext.currentState!.context).colorScheme.primary,
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 
   Widget buildListWidgetCard(BuildContext context) {

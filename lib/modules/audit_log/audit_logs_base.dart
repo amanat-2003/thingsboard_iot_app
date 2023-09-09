@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/modules/audit_log/audit_log_details_page.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
 const Map<ActionType, String> actionTypeTranslations = {
@@ -142,17 +144,26 @@ class _AuditLogCardState extends TbContextState<AuditLogCard> {
                                                 minFontSize: 8,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                    color: Color(0xFF282828),
+                                                    color: isDarkMode(context)
+                                                        ? AppColors
+                                                            .onPrimaryContainerDarkMode
+                                                        : AppColors
+                                                            .onTertiaryDarkMode,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14,
                                                     height: 20 / 14))),
                                         Text(
-                                            entityDateFormat.format(DateTime
-                                                .fromMillisecondsSinceEpoch(
-                                                    widget.auditLog
-                                                        .createdTime!)),
+                                            entityDateFormat
+                                                .format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        widget.auditLog
+                                                                .createdTime ??
+                                                            0)),
                                             style: TextStyle(
-                                                color: Color(0xFFAFAFAF),
+                                                color: isDarkMode(context)
+                                                    ? AppColors.primaryDarkMode
+                                                    : AppColors
+                                                        .secondaryLightMode,
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 12,
                                                 height: 16 / 12))
@@ -166,24 +177,38 @@ class _AuditLogCardState extends TbContextState<AuditLogCard> {
                                             fit: FlexFit.tight,
                                             child: Text(
                                                 entityTypeTranslations[widget
-                                                    .auditLog
-                                                    .entityId
-                                                    .entityType]!,
+                                                        .auditLog
+                                                        .entityId
+                                                        .entityType] ??
+                                                    '',
                                                 style: TextStyle(
-                                                    color: Color(0xFFAFAFAF),
+                                                    color: isDarkMode(context)
+                                                        ? AppColors
+                                                            .primaryDarkMode
+                                                        : AppColors
+                                                            .secondaryLightMode,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 12,
                                                     height: 16 / 12))),
                                         Text(
-                                            actionStatusTranslations[
-                                                widget.auditLog.actionStatus]!,
+                                            actionStatusTranslations[widget
+                                                    .auditLog.actionStatus] ??
+                                                '',
                                             style: TextStyle(
-                                                color: widget.auditLog
-                                                            .actionStatus ==
-                                                        ActionStatus.SUCCESS
-                                                    ? Color(0xFF008A00)
-                                                    : Color(0xFFFF0000),
+                                                color: isDarkMode(context)
+                                                    ? (widget.auditLog
+                                                                .actionStatus ==
+                                                            ActionStatus.SUCCESS
+                                                        ? Color.fromARGB(
+                                                            255, 0, 255, 0)
+                                                        : Color.fromARGB(
+                                                            255, 255, 0, 0))
+                                                    : (widget.auditLog
+                                                                .actionStatus ==
+                                                            ActionStatus.SUCCESS
+                                                        ? Color.fromARGB(255, 0, 137, 0)
+                                                        : Color(0xFFFF0000)),
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 12,
                                                 height: 16 / 12))
@@ -202,9 +227,12 @@ class _AuditLogCardState extends TbContextState<AuditLogCard> {
                             fit: FlexFit.tight,
                             child: Text(
                                 actionTypeTranslations[
-                                    widget.auditLog.actionType]!,
+                                        widget.auditLog.actionType] ??
+                                    '',
                                 style: TextStyle(
-                                    color: Color(0xFF282828),
+                                    color: isDarkMode(context)
+                                        ? AppColors.onPrimaryContainerDarkMode
+                                        : AppColors.onTertiaryDarkMode,
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14,
                                     height: 20 / 14))),
@@ -213,7 +241,11 @@ class _AuditLogCardState extends TbContextState<AuditLogCard> {
                             radius: 16,
                             backgroundColor: Color(0xffF0F4F9),
                             child: IconButton(
-                                icon: Icon(Icons.code, size: 18),
+                                icon: Icon(
+                                  Icons.code,
+                                  size: 18,
+                                  color: AppColors.blackColor,
+                                ),
                                 padding: EdgeInsets.all(7.0),
                                 onPressed: () =>
                                     _auditLogDetails(widget.auditLog))),

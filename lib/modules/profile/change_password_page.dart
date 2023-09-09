@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/generated/l10n.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 import 'package:iot_app/widgets/tb_progress_indicator.dart';
 
@@ -26,7 +28,10 @@ class _ChangePasswordPageState extends TbContextState<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: isDarkMode(context)
+            ? AppColors.backgroundDarkMode
+            : AppColors.backgroundLightMode,
+        extendBody: true,
         appBar: TbAppBar(
           tbContext,
           title: Text('${S.of(context).changePassword}'),
@@ -57,20 +62,31 @@ class _ChangePasswordPageState extends TbContextState<ChangePasswordPage> {
                                         errorText:
                                             '${S.of(context).currentPasswordRequireText}')
                                   ]),
-                                  decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        icon: Icon(showPassword
-                                            ? Icons.visibility
-                                            : Icons.visibility_off),
-                                        onPressed: () {
-                                          _showCurrentPasswordNotifier.value =
-                                              !_showCurrentPasswordNotifier
-                                                  .value;
-                                        },
+                                  style: TextStyle(
+                                    color: isDarkMode(context)
+                                        ? AppColors.whiteColor
+                                        : AppColors.onPrimaryContainerLightMode,
+                                    fontSize: 13,
+                                  ),
+                                  decoration: (const InputDecoration())
+                                      .applyDefaults(Theme.of(context)
+                                          .inputDecorationTheme)
+                                      .copyWith(
+                                        labelStyle: TextStyle(fontSize: 20),
+                                        labelText:
+                                            '${S.of(context).currentPasswordStar}',
+                                        hintText: 'Enter your current password',
+                                        suffixIcon: IconButton(
+                                          icon: Icon(showPassword
+                                              ? Icons.visibility
+                                              : Icons.visibility_off),
+                                          onPressed: () {
+                                            _showCurrentPasswordNotifier.value =
+                                                !_showCurrentPasswordNotifier
+                                                    .value;
+                                          },
+                                        ),
                                       ),
-                                      border: OutlineInputBorder(),
-                                      labelText:
-                                          '${S.of(context).currentPasswordStar}'),
                                 );
                               }),
                           SizedBox(height: 24),
@@ -86,19 +102,30 @@ class _ChangePasswordPageState extends TbContextState<ChangePasswordPage> {
                                         errorText:
                                             '${S.of(context).newPasswordRequireText}')
                                   ]),
-                                  decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        icon: Icon(showPassword
-                                            ? Icons.visibility
-                                            : Icons.visibility_off),
-                                        onPressed: () {
-                                          _showNewPasswordNotifier.value =
-                                              !_showNewPasswordNotifier.value;
-                                        },
+                                  style: TextStyle(
+                                    color: isDarkMode(context)
+                                        ? AppColors.whiteColor
+                                        : AppColors.onPrimaryContainerLightMode,
+                                    fontSize: 13,
+                                  ),
+                                  decoration: (const InputDecoration())
+                                      .applyDefaults(Theme.of(context)
+                                          .inputDecorationTheme)
+                                      .copyWith(
+                                        labelStyle: TextStyle(fontSize: 20),
+                                        labelText:
+                                            '${S.of(context).newPasswordStar}',
+                                        hintText: 'Enter your new password',
+                                        suffixIcon: IconButton(
+                                          icon: Icon(showPassword
+                                              ? Icons.visibility
+                                              : Icons.visibility_off),
+                                          onPressed: () {
+                                            _showNewPasswordNotifier.value =
+                                                !_showNewPasswordNotifier.value;
+                                          },
+                                        ),
                                       ),
-                                      border: OutlineInputBorder(),
-                                      labelText:
-                                          '${S.of(context).newPasswordStar}'),
                                 );
                               }),
                           SizedBox(height: 24),
@@ -114,19 +141,32 @@ class _ChangePasswordPageState extends TbContextState<ChangePasswordPage> {
                                         errorText:
                                             '${S.of(context).newPassword2RequireText}')
                                   ]),
-                                  decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        icon: Icon(showPassword
-                                            ? Icons.visibility
-                                            : Icons.visibility_off),
-                                        onPressed: () {
-                                          _showNewPassword2Notifier.value =
-                                              !_showNewPassword2Notifier.value;
-                                        },
+                                  style: TextStyle(
+                                    color: isDarkMode(context)
+                                        ? AppColors.whiteColor
+                                        : AppColors.onPrimaryContainerLightMode,
+                                    fontSize: 13,
+                                  ),
+                                  decoration: (const InputDecoration())
+                                      .applyDefaults(Theme.of(context)
+                                          .inputDecorationTheme)
+                                      .copyWith(
+                                        labelStyle: TextStyle(fontSize: 20),
+                                        labelText:
+                                            '${S.of(context).newPassword2Star}',
+                                        hintText:
+                                            'Enter your new password again',
+                                        suffixIcon: IconButton(
+                                          icon: Icon(showPassword
+                                              ? Icons.visibility
+                                              : Icons.visibility_off),
+                                          onPressed: () {
+                                            _showNewPassword2Notifier.value =
+                                                !_showNewPassword2Notifier
+                                                    .value;
+                                          },
+                                        ),
                                       ),
-                                      border: OutlineInputBorder(),
-                                      labelText:
-                                          '${S.of(context).newPassword2Star}'),
                                 );
                               }),
                           SizedBox(height: 24),

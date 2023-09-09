@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/modules/alarm/alarms_base.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 import 'alarms_list.dart';
@@ -46,7 +48,7 @@ class _AlarmsPageState extends TbContextState<AlarmsPage>
         )
       ]);
     }
-    return Scaffold(appBar: appBar, body: alarmsList);
+    return Scaffold(backgroundColor: isDarkMode(context)? AppColors.backgroundDarkMode: AppColors.backgroundLightMode,extendBody: true,appBar: appBar, body: alarmsList);
   }
 
   @override

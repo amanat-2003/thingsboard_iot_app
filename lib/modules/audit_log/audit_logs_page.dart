@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
 import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/modules/audit_log/audit_logs_list.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/widgets/tb_app_bar.dart';
 
 class AuditLogsPage extends TbPageWidget {
@@ -40,7 +42,14 @@ class _AuditLogsPageState extends TbPageState<AuditLogsPage> {
         )
       ]);
     }
-    return Scaffold(appBar: appBar, body: auditLogsList);
+    return Scaffold(
+      backgroundColor: isDarkMode(context)
+          ? AppColors.backgroundDarkMode
+          : AppColors.backgroundLightMode,
+      extendBody: true,
+      appBar: appBar,
+      body: auditLogsList,
+    );
   }
 
   @override

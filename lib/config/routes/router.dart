@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/auth/auth_routes.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/init/init_routes.dart';
@@ -12,6 +13,7 @@ import 'package:iot_app/modules/device/device_routes.dart';
 import 'package:iot_app/modules/home/home_routes.dart';
 import 'package:iot_app/modules/profile/profile_routes.dart';
 import 'package:iot_app/modules/tenant/tenant_routes.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/utils/ui_utils_routes.dart';
 
 class ThingsboardAppRouter {
@@ -23,6 +25,10 @@ class ThingsboardAppRouter {
         handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       var settings = context!.settings;
       return Scaffold(
+        backgroundColor: isDarkMode(context)
+            ? AppColors.backgroundDarkMode
+            : AppColors.backgroundLightMode,
+        extendBody: true,
         appBar: AppBar(title: Text('Not Found')),
         body: Center(child: Text('Route not defined: ${settings!.name}')),
       );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/core/context/tb_context.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 
 abstract class RefreshableWidget extends Widget {
   refresh();
@@ -89,6 +91,14 @@ class TextContextWidget extends TbContextWidget {
 class _TextContextWidgetState extends TbContextState<TextContextWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text(widget.text)));
+    return Scaffold(
+      backgroundColor: isDarkMode(context)
+          ? AppColors.backgroundDarkMode
+          : AppColors.backgroundLightMode,
+      extendBody: true,
+      body: Center(
+        child: Text(widget.text),
+      ),
+    );
   }
 }

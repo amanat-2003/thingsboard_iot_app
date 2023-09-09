@@ -20,7 +20,7 @@ class TbAppBar extends TbContextWidget implements PreferredSizeWidget {
       {this.leading,
       this.title,
       this.actions,
-      this.elevation = 8,
+      this.elevation = 0,
       this.shadowColor,
       this.showLoadingIndicator = false})
       : preferredSize =
@@ -67,7 +67,7 @@ class _TbAppBarState extends TbContextState<TbAppBar> {
       leading: widget.leading,
       title: widget.title,
       actions: widget.actions,
-      elevation: widget.elevation ?? 8,
+      elevation: widget.elevation ?? 0,
       shadowColor: widget.shadowColor ?? Color(0xFFFFFFFF).withAlpha(150),
     );
   }

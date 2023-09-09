@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/app_colors.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 
 import 'entities_base.dart';
 
@@ -26,27 +28,30 @@ class EntityListCard<T> extends StatelessWidget {
         child: Container(
           margin: _listWidgetCard ? EdgeInsets.only(right: 8) : EdgeInsets.zero,
           child: Card(
+            color: isDarkMode(context)
+              ? AppColors.primaryContainerDarkMode
+              : AppColors.primaryContainerLightMode,
               margin: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(10),
               ),
               elevation: 0,
               child: _entityCardWidgetBuilder(context, _entity)),
-          decoration: _listWidgetCard
-              ? BoxDecoration(
-                  border: Border.all(
-                      color: Color(0xFFDEDEDE),
-                      style: BorderStyle.solid,
-                      width: 1),
-                  borderRadius: BorderRadius.circular(4))
-              : BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withAlpha((255 * 0.05).ceil()),
-                        blurRadius: 6.0,
-                        offset: Offset(0, 4)),
-                  ],
-                ),
+          // decoration: _listWidgetCard
+          //     ? BoxDecoration(
+          //         border: Border.all(
+          //             color: Color(0xFFDEDEDE),
+          //             style: BorderStyle.solid,
+          //             width: 1),
+          //         borderRadius: BorderRadius.circular(4))
+          //     : BoxDecoration(
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: Colors.black.withAlpha((255 * 0.05).ceil()),
+          //               blurRadius: 6.0,
+          //               offset: Offset(0, 4)),
+          //         ],
+          //       ),
         ),
         onTap: () {
           if (_onEntityTap != null) {

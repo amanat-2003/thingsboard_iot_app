@@ -1,14 +1,11 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:universal_platform/universal_platform.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:iot_app/config/routes/router.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/modules/dashboard/main_dashboard_page.dart';
 import 'package:iot_app/widgets/two_page_view.dart';
-
 import 'config/themes/tb_theme.dart';
 import 'generated/l10n.dart';
 
@@ -50,13 +47,19 @@ class ThingsboardAppState extends State<ThingsboardApp>
   }
 
   @override
-  Future<void> navigateToDashboard(String dashboardId,
-      {String? dashboardTitle,
-      String? state,
-      bool? hideToolbar,
-      bool animate = true}) async {
-    await _mainDashboardPageController.openDashboard(dashboardId,
-        dashboardTitle: dashboardTitle, state: state, hideToolbar: hideToolbar);
+  Future<void> navigateToDashboard(
+    String dashboardId, {
+    String? dashboardTitle,
+    String? state,
+    bool? hideToolbar,
+    bool animate = true,
+  }) async {
+    await _mainDashboardPageController.openDashboard(
+      dashboardId,
+      dashboardTitle: dashboardTitle,
+      state: state,
+      hideToolbar: hideToolbar,
+    );
     _openDashboard(animate: animate);
   }
 
@@ -126,57 +129,86 @@ class ThingsboardAppState extends State<ThingsboardApp>
     return res;
   }
 
+  // void _darkStatusAndNavigationBar() {
+  //   SystemChrome.setSystemUIOverlayStyle(
+  //     SystemUiOverlayStyle(
+  //       systemNavigationBarColor: AppColors.navigationbarColorDarkMode,
+  //       statusBarColor: AppColors.backgroundDarkMode,
+  //       systemNavigationBarIconBrightness: Brightness.dark,
+  //     ),
+  //   );
+  // }
+
+  // void _lightStatusAndNavigationBar() {
+  //   SystemChrome.setSystemUIOverlayStyle(
+  //     SystemUiOverlayStyle(
+  //       systemNavigationBarColor: AppColors.navigationbarColorLightMode,
+  //       statusBarColor: AppColors.backgroundDarkMode,
+  //       systemNavigationBarIconBrightness: Brightness.light,
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
-        statusBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.light));
+    // Theme.of(context).scaffoldBackgroundColor == AppColors.backgroundLightMode
+    //     ? _lightStatusAndNavigationBar()
+    //     : _darkStatusAndNavigationBar();
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     systemNavigationBarColor: AppColors.navigationbarColorLightMode,
+    //     statusBarColor: AppColors.backgroundDarkMode,
+    //     systemNavigationBarIconBrightness: Brightness.dark,
+    //   ),
+    // );
+    // ThemeMode themeMode;
+    // bool isDarkMode = ref.watch(IsDarkModeStateProvider);
+    // themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
     return MaterialApp(
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
-        themeMode: ThemeMode.light,
-        home: TwoPageView(
-            controller: _mainPageViewController,
-            first: MaterialApp(
-              key: mainAppKey,
-              scaffoldMessengerKey: appRouter.tbContext.messengerKey,
-              localizationsDelegates: [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
-              theme: tbTheme,
-              themeMode: ThemeMode.light,
-              darkTheme: tbDarkTheme,
-              onGenerateRoute: appRouter.router.generator,
-              navigatorObservers: [appRouter.tbContext.routeObserver],
-            ),
-            second: MaterialApp(
-              key: dashboardKey,
-              // scaffoldMessengerKey: appRouter.tbContext.messengerKey,
-              localizationsDelegates: [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
-              theme: tbTheme,
-              themeMode: ThemeMode.light,
-              darkTheme: tbDarkTheme,
-              home: MainDashboardPage(appRouter.tbContext,
-                  controller: _mainDashboardPageController),
-            )));
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
+      // themeMode: ThemeMode.light,
+      home: TwoPageView(
+        controller: _mainPageViewController,
+        first: MaterialApp(
+          key: mainAppKey,
+          scaffoldMessengerKey: appRouter.tbContext.messengerKey,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
+          theme: nqLightTheme,
+          darkTheme: nqDarkTheme,
+          onGenerateRoute: appRouter.router.generator,
+          navigatorObservers: [appRouter.tbContext.routeObserver],
+        ),
+        second: MaterialApp(
+          key: dashboardKey,
+          // scaffoldMessengerKey: appRouter.tbContext.messengerKey,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
+          theme: nqLightTheme,
+          darkTheme: nqDarkTheme,
+          home: MainDashboardPage(appRouter.tbContext,
+              controller: _mainDashboardPageController),
+        ),
+      ),
+    );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:iot_app/constants/app_colors.dart';
 import 'package:iot_app/constants/assets_path.dart';
 import 'package:iot_app/core/context/tb_context.dart';
 import 'package:iot_app/core/context/tb_context_widget.dart';
@@ -10,6 +11,7 @@ import 'package:iot_app/core/entity/entities_base.dart';
 import 'package:iot_app/generated/l10n.dart';
 import 'package:iot_app/utils/services/device_profile_cache.dart';
 import 'package:iot_app/utils/services/entity_query_api.dart';
+import 'package:iot_app/utils/ui/dark_mode_checker.dart';
 import 'package:iot_app/utils/utils.dart';
 import 'package:thingsboard_client/thingsboard_client.dart';
 
@@ -124,10 +126,13 @@ class _AllDevicesCardState extends TbContextState<AllDevicesCard> {
         child: Container(
           child: Card(
               margin: EdgeInsets.zero,
+              color: isDarkMode(context)
+                  ? AppColors.primaryContainerDarkMode
+                  : AppColors.primaryContainerLightMode,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(10),
               ),
-              elevation: 0,
+              elevation: 5,
               child: Column(
                 children: [
                   Padding(
@@ -138,7 +143,10 @@ class _AllDevicesCardState extends TbContextState<AllDevicesCard> {
                         children: [
                           Text('${S.of(context).allDevices}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDarkMode(context)
+                                      ? AppColors.onPrimaryContainerDarkMode
+                                      : AppColors.onTertiaryDarkMode,
                                   fontSize: 14,
                                   height: 20 / 14)),
                           Icon(Icons.arrow_forward, size: 18)
@@ -157,8 +165,11 @@ class _AllDevicesCardState extends TbContextState<AllDevicesCard> {
                                 child: Container(
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(4),
+                                      color: isDarkMode(context)
+                                          ? AppColors.primaryContainerLightMode
+                                          : AppColors.primaryContainerDarkMode,
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(10)),
                                     ),
                                     child: StreamBuilder<int?>(
                                       stream: _activeDevicesCount.stream,
@@ -190,9 +201,16 @@ class _AllDevicesCardState extends TbContextState<AllDevicesCard> {
                           ),
                           // SizedBox(width: 4),
                           Container(
+                            width: 1,
+                            height: 40,
+                            child: VerticalDivider(
                               width: 1,
-                              height: 40,
-                              child: VerticalDivider(width: 1)),
+                              color: isDarkMode(context)
+                                  ? AppColors.onPrimaryDarkMode
+                                  : AppColors.whiteColor,
+                              thickness: 1,
+                            ),
+                          ),
                           Flexible(
                             fit: FlexFit.tight,
                             child: GestureDetector(
@@ -200,8 +218,11 @@ class _AllDevicesCardState extends TbContextState<AllDevicesCard> {
                                 child: Container(
                                     height: 40,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(4),
+                                      color: isDarkMode(context)
+                                          ? AppColors.primaryContainerLightMode
+                                          : AppColors.primaryContainerDarkMode,
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(10)),
                                     ),
                                     child: StreamBuilder<int?>(
                                       stream: _inactiveDevicesCount.stream,
@@ -287,114 +308,169 @@ class _DeviceProfileCardState extends TbContextState<DeviceProfileCard> {
     var entity = widget.deviceProfile;
     var hasImage = entity.image != null;
     Widget image;
-    BoxFit imageFit;
-    double padding;
+    // BoxFit imageFit;
+    // double padding;
     if (hasImage) {
-      image = Utils.imageFromBase64(entity.image!);
-      imageFit = BoxFit.contain;
-      padding = 8;
+      image = Utils.imageFromBase64(
+        entity.image!,
+      );
+      // imageFit = BoxFit.contain;
+      // padding = 8;
     } else {
       image = SvgPicture.asset(ThingsboardImage.deviceProfilePlaceholder,
           color: Theme.of(context).primaryColor,
           colorBlendMode: BlendMode.overlay,
           semanticsLabel: 'Device profile');
-      imageFit = BoxFit.cover;
-      padding = 0;
+      // imageFit = BoxFit.cover;
+      // padding = 0;
     }
     return ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: Column(children: [
-          Expanded(
-              child: Stack(children: [
-            SizedBox.expand(
+      borderRadius: BorderRadius.circular(10),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                color: isDarkMode(context)
+                    ? AppColors.primaryContainerLightMode
+                    : AppColors.primaryContainerDarkMode,
+                child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: FutureBuilder<int>(
+                      future: activeDevicesCount,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            snapshot.connectionState == ConnectionState.done) {
+                          var deviceCount = snapshot.data!;
+                          return _buildDeviceCount(context, true, deviceCount);
+                        } else {
+                          return Container(
+                              height: 40,
+                              child: Center(
+                                  child: Container(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation(
+                                              Theme.of(tbContext
+                                                      .currentState!.context)
+                                                  .colorScheme
+                                                  .primary),
+                                          strokeWidth: 2.5))));
+                        }
+                      },
+                    ),
+                    onTap: () {
+                      navigateTo(
+                          '/deviceList?active=true&deviceType=${entity.name}');
+                    }),
+              ),
+              // Divider(height: 1),
+              Container(
+                color: isDarkMode(context)
+                    ? AppColors.primaryContainerLightMode
+                    : AppColors.primaryContainerDarkMode,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: FutureBuilder<int>(
+                    future: inactiveDevicesCount,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData &&
+                          snapshot.connectionState == ConnectionState.done) {
+                        var deviceCount = snapshot.data!;
+                        return _buildDeviceCount(context, false, deviceCount);
+                      } else {
+                        return Container(
+                            height: 40,
+                            child: Center(
+                                child: Container(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Theme.of(tbContext
+                                                    .currentState!.context)
+                                                .colorScheme
+                                                .primary),
+                                        strokeWidth: 2.5))));
+                      }
+                    },
+                  ),
+                  onTap: () {
+                    navigateTo(
+                        '/deviceList?active=false&deviceType=${entity.name}');
+                  },
+                ),
+              ),
+              Divider(height: 1),
+              Container(
+                height: 44,
                 child: Padding(
-                    padding: EdgeInsets.all(padding),
-                    child: FittedBox(
-                        clipBehavior: Clip.hardEdge,
-                        fit: imageFit,
-                        child: image)))
-          ])),
-          Container(
-              height: 44,
-              child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   child: Center(
-                      child: AutoSizeText(
-                    entity.name,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    minFontSize: 12,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        height: 20 / 14),
-                  )))),
-          Divider(height: 1),
-          GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              child: FutureBuilder<int>(
-                future: activeDevicesCount,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.connectionState == ConnectionState.done) {
-                    var deviceCount = snapshot.data!;
-                    return _buildDeviceCount(context, true, deviceCount);
-                  } else {
-                    return Container(
-                        height: 40,
-                        child: Center(
-                            child: Container(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(Theme.of(
-                                            tbContext.currentState!.context)
-                                        .colorScheme
-                                        .primary),
-                                    strokeWidth: 2.5))));
-                  }
-                },
+                    child: AutoSizeText(
+                      entity.name,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      minFontSize: 12,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: isDarkMode(context)
+                              ? AppColors.onPrimaryContainerDarkMode
+                              : AppColors.onTertiaryDarkMode,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          height: 20 / 14),
+                    ),
+                  ),
+                ),
               ),
-              onTap: () {
-                navigateTo('/deviceList?active=true&deviceType=${entity.name}');
-              }),
-          Divider(height: 1),
-          GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              child: FutureBuilder<int>(
-                future: inactiveDevicesCount,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.connectionState == ConnectionState.done) {
-                    var deviceCount = snapshot.data!;
-                    return _buildDeviceCount(context, false, deviceCount);
-                  } else {
-                    return Container(
-                        height: 40,
-                        child: Center(
-                            child: Container(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(Theme.of(
-                                            tbContext.currentState!.context)
-                                        .colorScheme
-                                        .primary),
-                                    strokeWidth: 2.5))));
-                  }
-                },
-              ),
-              onTap: () {
-                navigateTo(
-                    '/deviceList?active=false&deviceType=${entity.name}');
-              })
-        ]));
+            ],
+          ),
+
+          // Expanded(
+          //   child: Stack(
+          //     children: [
+          //       SizedBox.expand(
+          //         child: Padding(
+          //           padding: EdgeInsets.all(padding),
+          //           child: FittedBox(
+          //               clipBehavior: Clip.hardEdge,
+          //               fit: imageFit,
+          //               child: image),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Align(
+            alignment: Alignment.bottomCenter,
+          ),
+          Positioned(
+            bottom: -30,
+            height: 120,
+            // left: 0,
+            right: 20,
+            width: 120,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: image,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 Widget _buildDeviceCount(BuildContext context, bool active, int count) {
-  Color color = active ? Color(0xFF008A00) : Color(0xFFAFAFAF);
+  Color color = isDarkMode(context)
+      ? (active
+          ? Color.fromARGB(255, 0, 181, 6)
+          : Color.fromARGB(255, 208, 111, 8))
+      : (active
+          ? Color.fromARGB(255, 0, 255, 8)
+          : Color.fromARGB(255, 255, 152, 41));
   return Padding(
     padding: EdgeInsets.all(12),
     child: Row(
@@ -421,19 +497,19 @@ Widget _buildDeviceCount(BuildContext context, bool active, int count) {
                     : '${S.of(context).inactive}',
                 style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                     height: 16 / 12,
                     color: color)),
             SizedBox(width: 8.67),
             Text(count.toString(),
                 style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                     height: 16 / 12,
                     color: color))
           ],
         ),
-        Icon(Icons.chevron_right, size: 16, color: Color(0xFFACACAC))
+        Icon(Icons.chevron_right, size: 16, color: color)
       ],
     ),
   );
