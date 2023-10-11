@@ -57,7 +57,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.10.0
+  flutter_launcher_icons: ^0.11.0
 
 flutter:
   uses-material-design: true
@@ -94,6 +94,6 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/thingsboard.png"
+  image_path: "assets/images/OnlyLogo.png"
 flutter_intl:
   enabled: true

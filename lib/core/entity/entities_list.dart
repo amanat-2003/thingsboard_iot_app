@@ -22,23 +22,27 @@ class _EntitiesListState<T, P> extends BaseEntitiesState<T, P> {
           padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
           sliver: SliverToBoxAdapter(child: heading)));
     }
-    slivers.add(SliverPadding(
+    slivers.add(
+      SliverPadding(
         padding: EdgeInsets.all(16),
         sliver: PagedSliverList.separated(
-            pagingController: pagingController,
-            separatorBuilder: (context, index) => SizedBox(height: 8),
-            builderDelegate: PagedChildBuilderDelegate<T>(
-                itemBuilder: (context, item, index) => EntityListCard<T>(
-                      item,
-                      key: widget.getKey(item),
-                      entityCardWidgetBuilder: widget.buildEntityListCard,
-                      onEntityTap: widget.onEntityTap,
-                    ),
-                firstPageProgressIndicatorBuilder:
-                    firstPageProgressIndicatorBuilder,
-                newPageProgressIndicatorBuilder:
-                    newPageProgressIndicatorBuilder,
-                noItemsFoundIndicatorBuilder: noItemsFoundIndicatorBuilder))));
+          pagingController: pagingController,
+          separatorBuilder: (context, index) => SizedBox(height: 8),
+          builderDelegate: PagedChildBuilderDelegate<T>(
+            itemBuilder: (context, item, index) => EntityListCard<T>(
+              item,
+              key: widget.getKey(item),
+              entityCardWidgetBuilder: widget.buildEntityListCard,
+              onEntityTap: widget.onEntityTap,
+            ),
+            firstPageProgressIndicatorBuilder:
+                firstPageProgressIndicatorBuilder,
+            newPageProgressIndicatorBuilder: newPageProgressIndicatorBuilder,
+            noItemsFoundIndicatorBuilder: noItemsFoundIndicatorBuilder,
+          ),
+        ),
+      ),
+    );
     return CustomScrollView(slivers: slivers);
   }
 }

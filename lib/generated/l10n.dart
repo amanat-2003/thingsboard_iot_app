@@ -53,7 +53,7 @@ class S {
   /// `ThingsBoard`
   String get appTitle {
     return Intl.message(
-      'ThingsBoard',
+      'Aqua Care',
       name: 'appTitle',
       desc: '',
       args: [],

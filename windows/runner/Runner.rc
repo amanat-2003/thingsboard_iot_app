@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "org.thingsboard" "\0"
-            VALUE "FileDescription", "iot_app" "\0"
+            VALUE "FileDescription", "Aqua Care" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "iot_app" "\0"
+            VALUE "InternalName", "Aqua Care" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 org.thingsboard. All rights reserved." "\0"
             VALUE "OriginalFilename", "iot_app.exe" "\0"
-            VALUE "ProductName", "iot_app" "\0"
+            VALUE "ProductName", "Aqua Care" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
