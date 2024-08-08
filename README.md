@@ -51,7 +51,7 @@
 
   [![AquaCare App Working Video](https://img.youtube.com/vi/v92SRcnVp44/0.jpg)](https://www.youtube.com/watch?v=v92SRcnVp44)
 - **Blog On AquaCare App**: [Read the Blog](https://amanatsingh.tech/aquacare)
-- **Repository Link**: [GitHub Repository](https://github.com/amanat-2003/iot-app)
+- **Repository Link**: [GitHub Repository](https://github.com/amanat-2003/aquacare)
 
 ## Contributing
 
