@@ -1,6 +1,6 @@
-# AquaCare
+# Flutter Thingsboard App
 
-"AquaCare" by Purgyil Technologies represents my innovative work in water management. Utilizing IoT, I tracked water parameters (volume, turbidity, temperature), triggering alarms for limit breaches. With skills in Thingsboard and Flutter, I integrated a robust backend and seamless frontend. Empowering users to manage water efficiently, promoting sustainability, and environmental consciousness in Himachal Pradesh.
+"Flutter Thingsboard App" represents my innovative work in water management. Utilizing IoT, I tracked water parameters (volume, turbidity, temperature), triggering alarms for limit breaches. With skills in Thingsboard and Flutter, I integrated a robust backend and seamless frontend. Empowering users to manage water efficiently, promoting sustainability, and environmental consciousness.
 
 ## Features
 
@@ -20,12 +20,12 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/amanat-2003/flutter_thingsboard_app.git
+   git clone https://github.com/amanat-2003/thingsboard_iot_app.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd flutter_thingsboard_app
+   cd thingsboard_iot_app
    ```
 
 3. Install the dependencies:
@@ -71,4 +71,4 @@ For any inquiries or support, please contact:
 
 ---
 
-Promoting sustainability and environmental consciousness in Himachal Pradesh through innovative water management solutions.
+Promoting sustainability and environmental consciousness through innovative water management solutions.
