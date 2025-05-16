@@ -118,6 +118,25 @@ class _DashboardState extends TbContextState<Dashboard> {
 
   late Uri _initialUrl;
 
+  // InAppWebViewSettings options = InAppWebViewSettings(
+  //   useShouldOverrideUrlLoading: true,
+  //   mediaPlaybackRequiresUserGesture: false,
+  //   useHybridComposition: true,
+  //   allowsInlineMediaPlayback: true,
+  //   javaScriptEnabled: true,
+  //   cacheEnabled: true,
+  //   supportZoom: false,
+  //   thirdPartyCookiesEnabled: true,
+  //   allowsBackForwardNavigationGestures: false
+  // );
+
+  // InAppWebViewSettings options = InAppWebViewSettings(
+  //   useHybridComposition: true, //
+  //   thirdPartyCookiesEnabled: true, //
+  // );
+
+  // late WebUri _initialUrl;
+
   @override
   void initState() {
     super.initState();
@@ -281,6 +300,7 @@ class _DashboardState extends TbContextState<Dashboard> {
                           key: webViewKey,
                           initialUrlRequest: URLRequest(url: _initialUrl),
                           initialOptions: options,
+                          // initialSettings: options,
                           onWebViewCreated: (webViewController) {
                             log.debug("onWebViewCreated");
                             webViewController.addJavaScriptHandler(
